@@ -35,12 +35,12 @@
 #define BOOT_MAGIC_NUM    1234567890
 
 /*! ===== WiFi Settings ===== */
-#define WIFI_SSID "wifiduck"
-#define WIFI_PASSWORD "wifiduck"
+#define WIFI_SSID "malduinow"
+#define WIFI_PASSWORD "malduinow"
 #define WIFI_CHANNEL "1"
 
-#define HOSTNAME "wifiduck"
-#define URL "wifi.duck"
+#define HOSTNAME "malduinow"
+#define URL "malduino.w"
 
 /*! ========== Safty checks ========== */
 #if !defined(ENABLE_I2C) && !defined(ENABLE_SERIAL)
