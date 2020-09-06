@@ -52,12 +52,26 @@ namespace serial_bridge {
             enabled = true;
             led::setColor(COLOR_ESP_UNFLASHED);
 
-            while (true) update();
+            // Wait until user releases button
+            while (digitalRead(BRIDGE_SWITCH) == LOW) {}
+
+            // Go into serial bridge mode until user presses button again
+            while (digitalRead(BRIDGE_SWITCH) == HIGH) {
+                update();
+            }
+
+            stop();
         }
     }
 
     void stop() {
+#ifdef BRIDGE_SAFE
+    if(esp_was_flashed.read() != 123) {
+        esp_was_flashed.write(123);
+    }
+#endif
         enabled = false;
+        led::setColor(0,0,0);  
     }
 
     void update() {
