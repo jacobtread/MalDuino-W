@@ -13,6 +13,7 @@
 #include <Arduino.h> // pinMode, digitalWrite, ...
 
 #ifdef BRIDGE_SAFE
+#define BRIDGE_SAFE_NUM 123
 #include <FlashStorage.h>
 #endif
 
@@ -46,7 +47,7 @@ namespace serial_bridge {
 
         if ((digitalRead(BRIDGE_SWITCH) == LOW) 
 #ifdef BRIDGE_SAFE
-        || (esp_was_flashed.read() != 123)
+        || (esp_was_flashed.read() != BRIDGE_SAFE_NUM)
 #endif
         ) {
             enabled = true;
@@ -66,8 +67,8 @@ namespace serial_bridge {
 
     void stop() {
 #ifdef BRIDGE_SAFE
-    if(esp_was_flashed.read() != 123) {
-        esp_was_flashed.write(123);
+    if(esp_was_flashed.read() != BRIDGE_SAFE_NUM) {
+        esp_was_flashed.write(BRIDGE_SAFE_NUM);
     }
 #endif
         enabled = false;
@@ -107,8 +108,8 @@ namespace serial_bridge {
                 BRIDGE_PORT.begin(baud);
 
 #ifdef BRIDGE_SAFE
-                if(esp_was_flashed.read() != 123) {
-                    esp_was_flashed.write(123);
+                if(esp_was_flashed.read() != BRIDGE_SAFE_NUM) {
+                    esp_was_flashed.write(BRIDGE_SAFE_NUM);
                 }
 #endif
             }
