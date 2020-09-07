@@ -73,16 +73,12 @@ p {
 /* Navigation bar */
 nav {
 	display: block;
-	background: #2f3136;
+	background: #1d2236;
 	font-weight: bold;
 }
   
 nav a {
 	color: inherit;
-}
-  
-nav a:last-of-type {
-	float: right;
 }
 
 .menu {
@@ -93,10 +89,16 @@ nav a:last-of-type {
 	margin: 0 auto;
 	display: flex;
 	flex-direction: row;
+	display:block;
 }
 
 .menu li {
 	margin: 10px 20px 10px 0;
+	display: inline-block;
+}
+
+.menu li:last-child {
+	float: right;
 }
 
 code {
@@ -134,7 +136,7 @@ code {
 }
 
 .primary {
-	color: #4974a9;
+	color: #0092db;
 }
 
 .select {
@@ -279,12 +281,12 @@ hr {
 }
 
 a {
-	color: #0aac42;
+	color: #1ca8eb;
   	text-decoration: none;
 }
 
 a:hover {
-	color: #0aac42;
+	color: #fff;
 	text-decoration: underline dotted;
 }
 
