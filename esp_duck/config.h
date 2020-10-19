@@ -40,7 +40,7 @@
 #define WIFI_CHANNEL "1"
 
 #define HOSTNAME "malduinow"
-#define URL "malduino.w"
+#define URL "malduinow.tools"
 
 /*! ========== Safty checks ========== */
 #if !defined(ENABLE_I2C) && !defined(ENABLE_SERIAL)
