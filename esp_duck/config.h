@@ -37,7 +37,7 @@
 /*! ===== WiFi Settings ===== */
 #define WIFI_SSID "malduinow"
 #define WIFI_PASSWORD "malduinow"
-#define WIFI_CHANNEL "1"
+#define WIFI_CHANNEL "7"
 
 #define HOSTNAME "malduinow"
 #define URL "malduinow.tools"
