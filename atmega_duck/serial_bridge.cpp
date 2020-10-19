@@ -80,6 +80,11 @@ namespace serial_bridge {
             if (rts != Serial.rts()) {
                 digitalWrite(BRIDGE_RST, !Serial.rts());
                 rts = Serial.rts();
+#ifdef BRIDGE_SAFE
+                if(esp_was_flashed.read() != BRIDGE_SAFE_NUM) {
+                    esp_was_flashed.write(BRIDGE_SAFE_NUM);
+                }
+#endif
             }
 
             if (dtr != Serial.dtr()) {
@@ -106,12 +111,6 @@ namespace serial_bridge {
 
                 baud = Serial.baud();
                 BRIDGE_PORT.begin(baud);
-
-#ifdef BRIDGE_SAFE
-                if(esp_was_flashed.read() != BRIDGE_SAFE_NUM) {
-                    esp_was_flashed.write(BRIDGE_SAFE_NUM);
-                }
-#endif
             }
         }
     }
