@@ -4,6 +4,10 @@
 The code running on the <a href="https://maltronics.com/collections/malduinos/products/malduino-w">Maltronics MalDuino W</a>
 </p>
 
+<p align="center">
+For documentation and support please see <a href="http://docs.maltronics.com/malduino-w/">here</a>
+</p>
+
 ## Credits
 
 Other software used for this project:
