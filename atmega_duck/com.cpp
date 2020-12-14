@@ -82,9 +82,9 @@ namespace com {
     }
 
     void serial_send_status() {
+        update_status();
 #ifdef ENABLE_DEBUG
         debugs("Replying with status {");
-        update_status();
         debugs("wait: ");
         debug(status.wait);
         debugs(",repeat: ");
