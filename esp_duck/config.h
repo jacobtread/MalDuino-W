@@ -9,18 +9,18 @@
 
 /*! ===== DEBUG Settings ===== */
 // #define ENABLE_DEBUG
-// #define DEBUG_PORT Serial
-// #define DEBUG_BAUD 115200
+ #define DEBUG_PORT Serial
+ #define DEBUG_BAUD 115200
 
 /*! ===== Communication Settings ===== */
-// #define ENABLE_SERIAL
+#define ENABLE_SERIAL
 #define SERIAL_PORT Serial
 #define SERIAL_BAUD 115200
 
-// #define ENABLE_I2C
+//#define ENABLE_I2C
 #define I2C_ADDR 0x31
-// #define I2C_SDA 4
-// #define I2C_SCL 5
+ #define I2C_SDA 4
+#define I2C_SCL 5
 #define I2C_CLOCK_SPEED 100000L
 
 #define BUFFER_SIZE 256
@@ -42,6 +42,14 @@
 #define HOSTNAME "malduinow"
 #define URL "malduinow.tools"
 
+/*! ===== Bluetooth ===== */
+#define BLUETOOTH_EN
+#define BLUETOOTH_SWITCH 27
+#define BLUETOOTH_NAME "malduinowb"
+#define BLUETOOTH_UUID "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
+#define BLUETOOTH_UUID_RX "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+#define BLUETOOTH_UUID_TX "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
+
 /*! ========== Safty checks ========== */
 #if !defined(ENABLE_I2C) && !defined(ENABLE_SERIAL)
   #define ENABLE_I2C
@@ -49,13 +57,13 @@
   #define I2C_SCL 5
 #endif /* if !defined(ENABLE_I2C) || !defined(ENABLE_SERIAL) */
 
-#if !defined(ESP8266)
-#error You are compiling for the wrong board, mate! Select something with an ESP8266.
-#endif /* ifdef DUCKMCU && DUCKMCU!="ATMEGA32U4" */
+#if !defined(ESP32)
+#error You are compiling for the wrong board, mate! Select something with an ESP32.
+#endif
 
 #if defined(ENABLE_DEBUG) && defined(ENABLE_SERIAL) && DEBUG_PORT == SERIAL_PORT
-#error Using same serial port for debugging and Communication!\
-    Use I2C instead or disable debug.
+//#error Using same serial port for debugging and Communication!\
+//    Use I2C instead or disable debug.
 #endif /* if DEBUG_PORT == SERIAL_PORT */
 
 #if defined(ENABLE_I2C) && I2C_SDA==I2C_SCL

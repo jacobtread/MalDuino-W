@@ -180,7 +180,7 @@ function read(fileName) {
   set_editor_filename(fileName);
   E("editor").value = "";
 
-  ws_send("stream \"" + fileName + "\"", log_ws);
+  ws_send("stream \"" + fileName + "\" r", log_ws);
 
   read_stream(); // !< Read file contents (recursively)
 
@@ -225,7 +225,7 @@ function write(fileName, content) {
   ws_send("remove \"/temporary_script\"", log_ws);
   ws_send("create \"/temporary_script\"", log_ws);
 
-  ws_send("stream \"/temporary_script\"", log_ws);
+  ws_send("stream \"/temporary_script\" w", log_ws);
 
   var ws_send_log = function(msg) {
     status("saving...");

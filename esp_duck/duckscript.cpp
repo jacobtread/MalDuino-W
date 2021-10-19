@@ -24,7 +24,7 @@ namespace duckscript {
     void run(String fileName) {
         if (fileName.length() > 0) {
             debugf("Run file %s\n", fileName.c_str());
-            f       = spiffs::open(fileName);
+            f       = spiffs::open(fileName, "r");
             running = true;
             nextLine();
         }

@@ -5,11 +5,11 @@
 
 #include "webserver.h"
 
-#include <ESP8266WiFi.h>
-#include <ESP8266mDNS.h>
+#include <ESPmDNS.h>
+#include <WiFi.h>
 #include <DNSServer.h>
 #include <ArduinoOTA.h>
-#include <ESPAsyncTCP.h>
+#include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
 #include "config.h"
@@ -38,7 +38,8 @@ namespace webserver {
 
     DNSServer dnsServer;
 
-    bool reboot = false;
+    bool reboot { false };
+    bool _enabled { false };
     IPAddress apIP(192, 168, 4, 1);
 
     void wsEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, AwsEventType type, void* arg, uint8_t* data, size_t len) {
@@ -151,7 +152,7 @@ namespace webserver {
         }, [](AsyncWebServerRequest* request, String filename, size_t index, uint8_t* data, size_t len, bool final) {
             if (!index) {
                 debugf("Update Start: %s\n", filename.c_str());
-                Update.runAsync(true);
+                //Update.runAsync(true);
                 if (!Update.begin((ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000)) {
                     Update.printError(Serial);
                 }
@@ -183,12 +184,16 @@ namespace webserver {
         // Start Server
         server.begin();
         debugln("Started Webserver");
+
+        _enabled = true;
     }
 
     void update() {
-        ArduinoOTA.handle();
-        if (reboot) ESP.restart();
-        dnsServer.processNextRequest();
+        if(_enabled) {
+            ArduinoOTA.handle();
+            if (reboot) ESP.restart();
+            dnsServer.processNextRequest();
+        }
     }
 
     void send(const char* str) {

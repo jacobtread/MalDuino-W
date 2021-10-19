@@ -12,6 +12,7 @@
 #include "spiffs.h"
 #include "settings.h"
 #include "cli.h"
+#include "bluetooth.h"
 
 void setup() {
     debug_init();
@@ -23,7 +24,8 @@ void setup() {
     spiffs::begin();
     settings::begin();
     cli::begin();
-    webserver::begin();
+    bluetooth::begin();
+    if(!bluetooth::enabled()) webserver::begin();
 
     com::onDone(duckscript::nextLine);
     com::onError(duckscript::stopAll);
@@ -47,6 +49,7 @@ void setup() {
 
 void loop() {
     com::update();
+    bluetooth::update();
     webserver::update();
 
     debug_update();

@@ -10,11 +10,6 @@
 // SimpleCLI library
 #include <SimpleCLI.h>
 
-// Get RAM (heap) usage
-extern "C" {
-#include "user_interface.h"
-}
-
 // Import modules used for different commands
 #include "spiffs.h"
 #include "duckscript.h"
@@ -79,7 +74,7 @@ namespace cli {
          * Prints number of free bytes in the RAM
          */
         cli.addCommand("ram", [](cmd* c) {
-            size_t freeRam = system_get_free_heap_size();
+            size_t freeRam = heap_caps_get_free_size(MALLOC_CAP_8BIT);
             String res     = String(freeRam) + " bytes available";
             print(res);
         });
@@ -208,7 +203,7 @@ namespace cli {
             Command  cmd { c };
             Argument arg { cmd.getArg(0) };
 
-            File f = spiffs::open(arg.getValue());
+            File f = spiffs::open(arg.getValue(), "r");
 
             int buf_size { 256 };
             char buffer[buf_size];
@@ -368,15 +363,20 @@ namespace cli {
          *
          * \param * Path to file
          */
-        cli.addSingleArgCmd("stream", [](cmd* c) {
-            Command  cmd { c };
-            Argument arg { cmd.getArg(0) };
-
-            spiffs::streamOpen(arg.getValue());
-
-            String response = "> opened stream \"" + arg.getValue() + "\"";
-            print(response);
-        });
+        Command cmdStream {
+          cli.addCommand("stream", [](cmd* c) {
+              Command  cmd { c };
+              Argument arg1 { cmd.getArg(0) };
+              Argument arg2 { cmd.getArg(1) };
+  
+              spiffs::streamOpen(arg1.getValue(), arg2.getValue().c_str());
+  
+              String response = "> opened stream \"" + arg1.getValue() + "\" for " + ((arg2.getValue() == "w") ? "writing" : "reading");
+              print(response);
+          })
+        };
+        cmdStream.addPosArg("f/ile");
+        cmdStream.addPosArg("m/ode", "r");
 
         /**
          * \brief Create close command

@@ -28,7 +28,7 @@ namespace spiffs {
 
         remove(FILE_NAME);
         create(FILE_NAME);
-        File f = open(FILE_NAME);
+        File f = open(FILE_NAME, "r");
         if (!f) {
             format();
         } else {
@@ -44,24 +44,15 @@ namespace spiffs {
     }
 
     size_t size() {
-        FSInfo fs_info;
-
-        SPIFFS.info(fs_info);
-        return fs_info.totalBytes;
+        return SPIFFS.totalBytes();
     }
 
     size_t usedBytes() {
-        FSInfo fs_info;
-
-        SPIFFS.info(fs_info);
-        return fs_info.usedBytes;
+        return SPIFFS.usedBytes();
     }
 
     size_t freeBytes() {
-        FSInfo fs_info;
-
-        SPIFFS.info(fs_info);
-        return fs_info.totalBytes - fs_info.usedBytes;
+        return SPIFFS.totalBytes() - SPIFFS.usedBytes();
     }
 
     size_t size(String fileName) {
@@ -76,10 +67,10 @@ namespace spiffs {
         return SPIFFS.exists(fileName);
     }
 
-    File open(String fileName) {
+    File open(String fileName, const char* mode) {
         fixPath(fileName);
 
-        return SPIFFS.open(fileName, "a+");
+        return SPIFFS.open(fileName, mode);
     }
 
     void create(String fileName) {
@@ -104,7 +95,7 @@ namespace spiffs {
     }
 
     void write(String fileName, const char* str) {
-        File f = open(fileName);
+        File f = open(fileName, "w");
 
         if (f) {
             f.println(str);
@@ -116,7 +107,7 @@ namespace spiffs {
     }
 
     void write(String fileName, const uint8_t* buf, size_t len) {
-        File f = open(fileName);
+        File f = open(fileName, "w");
 
         if (f) {
             f.write(buf, len);
@@ -132,15 +123,21 @@ namespace spiffs {
 
         fixPath(dirName);
 
-        Dir dir = SPIFFS.openDir(dirName);
-
-        while (dir.next()) {
-            res += dir.fileName();
+        File root = SPIFFS.open(dirName);
+        
+        if(!root) return "\n";
+        if(!root.isDirectory()) return "\n";
+    
+        File file = root.openNextFile();
+        while(file){
+            res += '/';
+            res += file.name();
             res += ' ';
-            res += size(dir.fileName());
+            res += file.size();
             res += '\n';
+            file = root.openNextFile();
         }
-
+        
         if (res.length() == 0) {
             res += "\n";
         }
@@ -148,9 +145,9 @@ namespace spiffs {
         return res;
     }
 
-    void streamOpen(String fileName) {
+    void streamOpen(String fileName, const char* mode) {
         streamClose();
-        streamFile = open(fileName);
+        streamFile = open(fileName, mode);
         if (!streamFile) debugln("ERROR: No stream file open");
     }
 

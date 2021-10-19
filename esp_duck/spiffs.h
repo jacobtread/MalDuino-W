@@ -6,6 +6,7 @@
 #pragma once
 
 #include <Arduino.h> // String
+#include <SPIFFS.h>  // SPIFFS
 #include <FS.h>      // File
 
 namespace spiffs {
@@ -19,7 +20,7 @@ namespace spiffs {
     size_t size(String fileName);
     bool exists(String fileName);
 
-    File open(String fileName);
+    File open(String fileName, const char* mode);
     void create(String fileName);
 
     void remove(String fileName);
@@ -29,7 +30,7 @@ namespace spiffs {
 
     String listDir(String dirName);
 
-    void streamOpen(String fileName);
+    void streamOpen(String fileName, const char* mode);
     void streamWrite(const char* buf, size_t len);
     size_t streamRead(char* buf, size_t len);
     size_t streamReadUntil(char* buf, char delimiter, size_t max_len);

@@ -43,6 +43,7 @@ namespace serial_bridge {
 #else // ifdef BRIDGE_0_INVERTED
         digitalWrite(BRIDGE_0, HIGH);
 #endif // ifdef BRIDGE_0_INVERTED
+
         digitalWrite(BRIDGE_RST, HIGH);
 
         if ((digitalRead(BRIDGE_SWITCH) == LOW) 
@@ -54,7 +55,12 @@ namespace serial_bridge {
             led::setColor(COLOR_ESP_UNFLASHED);
 
             // Wait until user releases button
-            while (digitalRead(BRIDGE_SWITCH) == LOW) {}
+            while (digitalRead(BRIDGE_SWITCH) == LOW) {
+              led::setColor(0,0,0);
+              delay(50);
+              led::setColor(COLOR_ESP_UNFLASHED);
+              delay(50);
+            }
 
             // Go into serial bridge mode until user presses button again
             while (digitalRead(BRIDGE_SWITCH) == HIGH) {
