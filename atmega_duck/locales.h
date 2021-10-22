@@ -15,3 +15,6 @@
 #include "locale_fr.h"
 #include "locale_ru.h"
 #include "locale_dk.h"
+#include "locale_be.h"
+#include "locale_pt.h"
+#include "locale_it.h"

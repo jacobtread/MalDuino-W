@@ -2,8 +2,7 @@
    This software is licensed under the MIT License. See the license file for details.
    Source: https://github.com/spacehuhntech/WiFiDuck
 
-   Modified locale for french azety (WIP)
-   TODO Need to add : ÉÈÀ°ç£¤µù§¨öôûüîïâäòàìùÖÔÛÜÎÏÂÄÒÀÌÙ€
+   Modified locale for Belgium azerty
  */
 
 #pragma once
@@ -11,7 +10,7 @@
 #include "usb_hid_keys.h"
 
 // Modifier(s), Key
-const uint8_t ascii_fr[] PROGMEM = {
+const uint8_t ascii_be[] PROGMEM = {
     KEY_NONE,       KEY_NONE,       // NUL
     KEY_NONE,       KEY_NONE,       // SOH
     KEY_NONE,       KEY_NONE,       // STX
@@ -50,7 +49,7 @@ const uint8_t ascii_fr[] PROGMEM = {
 
     // 32, 0x20
     KEY_NONE,       KEY_SPACE,      // ' '
-    KEY_NONE,       KEY_SLASH,      // !
+    KEY_NONE,       KEY_8,          // !
     KEY_NONE,       KEY_3,          // "
     KEY_MOD_RALT,   KEY_3,          // #
 
@@ -63,12 +62,12 @@ const uint8_t ascii_fr[] PROGMEM = {
     // 40, 0x28
     KEY_NONE,       KEY_5,          // (
     KEY_NONE,       KEY_MINUS,      // )
-    KEY_NONE,       KEY_BACKSLASH,  // *
-    KEY_MOD_LSHIFT, KEY_EQUAL,      // +
+    KEY_MOD_LSHIFT, KEY_RIGHTBRACE, // *
+    KEY_MOD_LSHIFT, KEY_SLASH,      // +
 
     // 44, 0x2c
     KEY_NONE,       KEY_M,          // ,
-    KEY_NONE,       KEY_6,          // -
+    KEY_NONE,       KEY_EQUAL,      // -
     KEY_MOD_LSHIFT, KEY_COMMA,      // .
     KEY_MOD_LSHIFT, KEY_DOT,        // /
 
@@ -92,12 +91,12 @@ const uint8_t ascii_fr[] PROGMEM = {
 
     // 60, 0x3c
     KEY_NONE,       KEY_102ND,      // <
-    KEY_NONE,       KEY_EQUAL,      // =
+    KEY_NONE,       KEY_SLASH,      // =
     KEY_MOD_LSHIFT, KEY_102ND,      // >
     KEY_MOD_LSHIFT, KEY_M,          // ?
 
     // 64, 0x40
-    KEY_MOD_RALT,   KEY_0,          // @
+    KEY_MOD_RALT,   KEY_2,          // @
     KEY_MOD_LSHIFT, KEY_Q,          // A
     KEY_MOD_LSHIFT, KEY_B,          // B
     KEY_MOD_LSHIFT, KEY_C,          // C
@@ -136,16 +135,16 @@ const uint8_t ascii_fr[] PROGMEM = {
     KEY_MOD_LSHIFT, KEY_X,          // X
     KEY_MOD_LSHIFT, KEY_Y,          // Y
     KEY_MOD_LSHIFT, KEY_W,          // Z
-    KEY_MOD_RALT,   KEY_5,          // [
+    KEY_MOD_RALT,   KEY_LEFTBRACE,  // [
 
     // 92, 0x5c
-    KEY_MOD_RALT,   KEY_8,          // bslash
-    KEY_MOD_RALT,   KEY_MINUS,      // ]
-    KEY_MOD_RALT,   KEY_9,          // ^
-    KEY_NONE,       KEY_8,          // _
+    KEY_MOD_RALT,   KEY_102ND,      // bslash
+    KEY_MOD_RALT,   KEY_RIGHTBRACE, // ]
+    KEY_MOD_RALT,   KEY_6,          // ^
+    KEY_MOD_LSHIFT, KEY_EQUAL,      // _
 
     // 96, 0x60
-    KEY_MOD_RALT,   KEY_7,          // `
+    KEY_MOD_RALT,   KEY_BACKSLASH,  // `
     KEY_NONE,       KEY_Q,          // a
     KEY_NONE,       KEY_B,          // b
     KEY_NONE,       KEY_C,          // c
@@ -184,35 +183,21 @@ const uint8_t ascii_fr[] PROGMEM = {
     KEY_NONE,       KEY_X,          // x
     KEY_NONE,       KEY_Y,          // y
     KEY_NONE,       KEY_W,          // z
-    KEY_MOD_RALT,   KEY_4,          // {
+    KEY_MOD_RALT,   KEY_9,          // {
 
     // 124, 0x7c
-    KEY_MOD_RALT,   KEY_6,          // |
-    KEY_MOD_RALT,   KEY_EQUAL,      // }
-    KEY_MOD_RALT,   KEY_2,          // ~
+    KEY_MOD_RALT,   KEY_1,          // |
+    KEY_MOD_RALT,   KEY_0,          // }
+    KEY_MOD_RALT,   KEY_SLASH,      // ~
     KEY_NONE,       KEY_NONE        // DEL
 };
 
-const uint8_t extended_ascii_fr[] PROGMEM = {
-    0xE8, KEY_NONE,         KEY_7,          // è
-    0xE9, KEY_NONE,         KEY_2,          // é
-    0xE0, KEY_NONE,         KEY_0,          // à
-    0xF9, KEY_NONE,         KEY_APOSTROPHE, // ù
-    0xB5, KEY_MOD_LSHIFT,   KEY_BACKSLASH,  // µ
-    0xE7, KEY_NONE,         KEY_9           // ç
-};
+const uint8_t extended_ascii_be[] PROGMEM = {};
 
-const uint8_t utf8_fr[] PROGMEM = {
-    0xc3, 0xa8, 0x00, 0x00, KEY_NONE,       KEY_7,              // è
-    0xc3, 0xa9, 0x00, 0x00, KEY_NONE,       KEY_2,              // é
-    0xc3, 0xa0, 0x00, 0x00, KEY_NONE,       KEY_0,              // à
-    0xc3, 0xb9, 0x00, 0x00, KEY_NONE,       KEY_APOSTROPHE,     // ù
-    0xc2, 0xb5, 0x00, 0x00, KEY_MOD_LSHIFT, KEY_BACKSLASH,      // µ    
-    0xc3, 0xa7, 0x00, 0x00, KEY_NONE,       KEY_9               // ç
-};
+const uint8_t utf8_be[] PROGMEM = {};
 
-static hid_locale_t locale_fr {
-    (uint8_t*)ascii_fr, 128,
-    (uint8_t*)extended_ascii_fr,  sizeof(extended_ascii_fr) / 3,
-    (uint8_t*)utf8_fr, sizeof(utf8_fr) / 6
+static hid_locale_t locale_be {
+    (uint8_t*)ascii_be, 128,
+    (uint8_t*)extended_ascii_be,  sizeof(extended_ascii_be) / 3,
+    (uint8_t*)utf8_be, sizeof(utf8_be) / 6
 };

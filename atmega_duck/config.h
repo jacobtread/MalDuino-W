@@ -5,7 +5,7 @@
 
 #pragma once
 
-#define VERSION "1.0.4"
+#define VERSION "1.1.0"
 
 /* ===== Serial Bridge ===== */
 // #define BRIDGE_ENABLE
@@ -42,8 +42,14 @@
 // #define DOTSTAR_DI 7
 // #define DOTSTAR_CI 8
 
-//*! ===== Color Modes ===== */
-#define COLOR_ESP_UNFLASHED 0,0,255
+// #define LED_RGB
+// #define LED_ANODE
+// #define LED_R 5
+// #define LED_G 6
+// #define LED_B 9
+
+// *! ===== Color Modes ===== */
+#define COLOR_ESP_UNFLASHED 0, 0, 255
 
 /*! ===== Parser Settings ===== */
 #define CASE_SENSETIVE false
