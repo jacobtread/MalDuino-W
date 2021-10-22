@@ -5,7 +5,7 @@
 
 #pragma once
 
-#define VERSION "1.0.4"
+#define VERSION "1.1.0"
 
 /*! ===== DEBUG Settings ===== */
 // #define ENABLE_DEBUG
@@ -17,7 +17,7 @@
 #define SERIAL_PORT Serial
 #define SERIAL_BAUD 115200
 
-//#define ENABLE_I2C
+// #define ENABLE_I2C
 #define I2C_ADDR 0x31
  #define I2C_SDA 4
 #define I2C_SCL 5
@@ -59,10 +59,10 @@
 
 #if !defined(ESP32)
 #error You are compiling for the wrong board, mate! Select something with an ESP32.
-#endif
+#endif // if !defined(ESP32)
 
 #if defined(ENABLE_DEBUG) && defined(ENABLE_SERIAL) && DEBUG_PORT == SERIAL_PORT
-//#error Using same serial port for debugging and Communication!\
+// #error Using same serial port for debugging and Communication!\
 //    Use I2C instead or disable debug.
 #endif /* if DEBUG_PORT == SERIAL_PORT */
 

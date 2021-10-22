@@ -5,7 +5,7 @@
 
 #pragma once
 
-#define VERSION "1.0.4"
+#define VERSION "1.1.0"
 
 /* ===== Serial Bridge ===== */
 #define BRIDGE_ENABLE
@@ -13,7 +13,7 @@
 #define BRIDGE_SWITCH A0
 #define BRIDGE_RST A8
 #define BRIDGE_0 A10
-//#define BRIDGE_0_INVERTED
+// #define BRIDGE_0_INVERTED
 #define BRIDGE_SAFE
 
 /*! DEBUG Settings */
@@ -33,7 +33,7 @@
 #define PACKET_SIZE 32
 
 /*! ===== LED Settings ===== */
-//#define NEOPIXEL
+// #define NEOPIXEL
 #define NEOPIXEL_NUM 1
 #define LED_PIN PIN_NEOPIXEL
 
@@ -42,8 +42,14 @@
  #define DOTSTAR_DI 21
  #define DOTSTAR_CI 22
 
-//*! ===== Color Modes ===== */
-#define COLOR_ESP_UNFLASHED 0,0,255
+// #define LED_RGB
+// #define LED_ANODE
+// #define LED_R 5
+// #define LED_G 6
+// #define LED_B 9
+
+// *! ===== Color Modes ===== */
+#define COLOR_ESP_UNFLASHED 0, 0, 255
 
 /*! ===== Parser Settings ===== */
 #define CASE_SENSETIVE false
@@ -86,7 +92,7 @@
   #endif /* if defined(ENABLE_I2C) && (LED_PIN==2 || LED_PIN==3) */
 
   #if defined(ENABLE_SERIAL) && (LED_PIN==0 || LED_PIN==1)
-//  #error Neopixel pin overlaps with serial pins, disable serial or change the LED pin! 
+//  #error Neopixel pin overlaps with serial pins, disable serial or change the LED pin!
   #endif /* if defined(ENABLE_SERIAL) && (LED_PIN==0 || LED_PIN==1) */
 
   #if defined(BRIDGE_ENABLE) && (LED_PIN==BRIDGE_RST || LED_PIN==BRIDGE_0 || LED_PIN==BRIDGE_SWITCH)
