@@ -35,11 +35,11 @@
 #define BOOT_MAGIC_NUM    1234567890
 
 /*! ===== WiFi Settings ===== */
-#define WIFI_SSID "malduinow"
-#define WIFI_PASSWORD "malduinow"
+#define WIFI_SSID "malduinowb"
+#define WIFI_PASSWORD "malduinowb"
 #define WIFI_CHANNEL "7"
 
-#define HOSTNAME "malduinow"
+#define HOSTNAME "malduinowb"
 #define URL "malduinow.tools"
 
 /*! ===== Bluetooth ===== */
