@@ -17,7 +17,7 @@
 #define BRIDGE_SAFE
 
 /*! DEBUG Settings */
-#define ENABLE_DEBUG
+// #define ENABLE_DEBUG
 #define DEBUG_PORT Serial
 #define DEBUG_BAUD 115200
 
