@@ -13,14 +13,7 @@ function fileNameToVar(name) {
     return name.replace(/[/.-]/g, '_')
 }
 
-function createServerCallback(file, varName) {
-    let mimeType = DEFAULT_MIME
-    for (let key in MIME_TYPES) {
-        if (file.endsWith('.' + key)) {
-            mimeType = MIME_TYPES[key];
-            break
-        }
-    }
+function createServerCallback(file, varName, mimeType) {
     return `\\
 server.on("${ file }", HTTP_GET, [](AsyncWebServerRequest* request) {\\
     reply(request, 200, "${ mimeType }", ${ varName }, sizeof(${ varName }));\\
@@ -48,8 +41,21 @@ async function createCallbacks(dir, prefix = '/') {
             memString = memString.substring(0, memString.length - 1)
             memString += '};\n'
 
+            let mimeType = DEFAULT_MIME
+            for (let key in MIME_TYPES) {
+                if (filePath.endsWith('.' + key)) {
+                    mimeType = MIME_TYPES[key];
+                    break
+                }
+            }
             hexData.push(memString)
-            callbacks.push(createServerCallback(prefix + file, varName))
+            if (file.endsWith('.html')) {
+                let newPrefix = prefix.substring(0, prefix.length - 1)
+                if (newPrefix.length === 0) newPrefix = '/'
+                callbacks.push(createServerCallback(newPrefix, varName, mimeType))
+            } else {
+                callbacks.push(createServerCallback(prefix + file, varName, mimeType))
+            }
         }
     }
 }

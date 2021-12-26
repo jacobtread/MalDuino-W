@@ -87,15 +87,6 @@ namespace webserver {
         WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
         debugf("Started Access Point \"%s\":\"%s\"\n", settings::getSSID(), settings::getPassword());
 
-        // Webserver
-        server.on("/", HTTP_GET, [](AsyncWebServerRequest* request) {
-            request->redirect("/index.html");
-        });
-
-        server.onNotFound([](AsyncWebServerRequest* request) {
-            request->redirect("/error404.html");
-        });
-
         server.on("/run", [](AsyncWebServerRequest* request) {
             String message;
 
@@ -111,6 +102,10 @@ namespace webserver {
         });
 
         WEBSERVER_CALLBACK;
+
+        server.onNotFound([](AsyncWebServerRequest* request) {
+            request->redirect("/");
+        });
 
         // Arduino OTA Update
         ArduinoOTA.onStart([]() {
