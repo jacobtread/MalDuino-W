@@ -8,6 +8,7 @@
   "scripts": {
     "web:install": "cd websvelte && yarn install",
     "web:build": "cd websvelte && yarn build",
-    "web:convert": "yarn web:build && node webcoverter.js"
+    "web:convert": "yarn web:build && node webcoverter.js",
+    "dev": "cd websvelte && yarn dev"
   }
 }

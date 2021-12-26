@@ -78,8 +78,7 @@ class Socket {
             console.error('[WS] [ERR] ' + event)
         }
         this.ws = ws;
-        if (this.updateInterval) clearInterval(this.updateInterval)
-        this.updateInterval = setInterval(this.update, 1)
+        this.updateInterval = setInterval(() => this.update(), 1)
     }
 
     update() {
@@ -88,6 +87,7 @@ class Socket {
             this.ws.send(message)
             this.callback = callback
             console.debug('[WS] [OUT] ' + message)
+            this.queueOpen = false
         }
     }
 
@@ -123,6 +123,7 @@ class Socket {
         const response = await this.send('mem')
         const parse = (value: string): number => parseInt(value.split(' ', 1)[0])
         const [ totalBytes, usedBytes, freeBytes ] = response.split('\n', 3);
+
         return {
             totalBytes: parse(totalBytes),
             usedBytes: parse(usedBytes),

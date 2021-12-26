@@ -40,7 +40,7 @@
 #define WIFI_CHANNEL "7"
 
 #define HOSTNAME "malduinow"
-#define URL "malduinow.tools"
+#define URL "app.local"
 
 /*! ========== Safty checks ========== */
 #if !defined(ENABLE_I2C) && !defined(ENABLE_SERIAL)

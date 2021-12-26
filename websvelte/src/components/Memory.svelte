@@ -4,18 +4,16 @@
     import { browser } from "$app/env";
     import { writable } from "svelte/store";
 
-    const totalBytes = writable('')
-    const usedBytes = writable('')
-    const freeBytes = writable('')
+    const totalBytes = writable(0)
+    const usedBytes = writable(0)
+    const freeBytes = writable(0)
 
-    export function updateMemory() {
-        socket.send('mem', (msg) => {
-            const lines = msg.split('\n')
-            $totalBytes = lines[0].split(' ', 1)[0]
-            $usedBytes = lines[1].split(' ', 1)[0]
-            $freeBytes = lines[2].split(' ', 1)[0]
-            paintGraph()
-        })
+    export async function updateMemory() {
+        const resp = await socket.getMemoryUsage()
+        $totalBytes = resp.totalBytes
+        $usedBytes = resp.usedBytes
+        $freeBytes = resp.freeBytes
+        paintGraph()
     }
 
     function paintGraph() {
@@ -24,7 +22,7 @@
         const w = ctx.canvas.width;
         const h = ctx.canvas.height;
 
-        const usage = parseInt($usedBytes) / parseInt($totalBytes)
+        const usage = $usedBytes / $totalBytes
         const usagePercent = usage * 100
 
         let percentText: string;

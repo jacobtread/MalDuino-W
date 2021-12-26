@@ -12,18 +12,8 @@
 
     const files = writable<File[]>([])
 
-    export function loadFiles() {
-        socket.send('ls', function (msg) {
-            const lines = msg.split('\n');
-            const newFiles = [];
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i];
-                if (line.length < 1) continue
-                const parts = line.split(' ', 2);
-                newFiles.push({ name: parts[0], size: parts[1] })
-            }
-            $files = newFiles;
-        })
+    export async function loadFiles() {
+        $files = await socket.getFiles();
     }
 
     if (browser) {
