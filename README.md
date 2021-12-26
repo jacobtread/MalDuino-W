@@ -1,20 +1,5 @@
-# MalDuino W
+# MalDuino W Svelte
 
-<p align="center">
-The code running on the <a href="https://maltronics.com/collections/malduinos/products/malduino-w">Maltronics MalDuino W</a>
-</p>
+A Fork of the original MalDuino W code with an improved user interface using Svelte Kit along with various
+other misc edits
 
-<p align="center">
-For documentation and support please see <a href="http://docs.maltronics.com/malduino-w/">here</a>
-</p>
-
-## Credits
-
-Other software used for this project:
-  - [Arduino](https://www.arduino.cc)
-  - [Neopixel Library](https://github.com/adafruit/Adafruit_NeoPixel)
-  - [Dotstar Library](https://github.com/adafruit/Adafruit_DotStar)
-  - [AVR, ESP8266 & SAMD Arduino Core](https://github.com/spacehuhn/hardware/tree/master/wifiduck)
-  - [ESPAsyncTCP](https://github.com/me-no-dev/ESPAsyncTCP)
-  - [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
-  - [SimpleCLI](https://github.com/spacehuhn/SimpleCLI)

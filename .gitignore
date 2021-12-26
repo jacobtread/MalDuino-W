@@ -38,3 +38,5 @@ save-commands.json
 *.bin
 *.zip
 .DS_Store
+
+.idea/
