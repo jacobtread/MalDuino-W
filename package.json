@@ -1,0 +1,13 @@
+{
+  "name": "Malduino-w-Re",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jacobtread/MalDuino-W.git",
+  "author": "Jacobtread <jacobtread@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "web:install": "cd websvelte && yarn install",
+    "web:build": "cd websvelte && yarn build",
+    "web:convert": "yarn web:build && node webcoverter.js"
+  }
+}

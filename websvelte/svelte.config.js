@@ -9,7 +9,9 @@ const config = {
 
 	kit: {
 		adapter: adapter({out: 'dist'}),
-	}
+		appDir: '.',
+		ssr: false
+	},
 };
 
 export default config;
