@@ -22,8 +22,10 @@
   }
 
   .main {
-    padding: 1.5rem;
+    padding: 2.5rem;
+
     color: gray;
+    flex: auto;
   }
 </style>
 
