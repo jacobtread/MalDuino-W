@@ -30,6 +30,7 @@ body {
 }
 
 .button {
+  cursor: pointer;
   border: none;
   text-decoration: none;
   background: transparent;
@@ -55,3 +56,11 @@ body {
   }
 }
 
+.input {
+  font-size: 1.1rem;
+  padding: 0 1rem;
+  border: 2px solid gray;
+  background: transparent;
+  border-radius: 0.5rem;
+  color: white;
+}
