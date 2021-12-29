@@ -10,9 +10,6 @@
         <button class="button action-bar__button button--red">Stop Scripts</button>
         <button class="button action-bar__button button--yellow">Reconnect</button>
     </div>
-    <button on:click={() => toast('Yes', 3000)}>
-        Show Toast
-    </button>
 </div>
 <style lang="scss">
     .action-bar {
