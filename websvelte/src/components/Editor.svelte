@@ -8,7 +8,7 @@
     const highlightElm = writable()
 
     $: {
-        const lines = $text.split('\n')
+        const lines = $text.replace(/\u00A0/g, ' ').replace(/\u200B/g, '').split('\n')
         let output = ''
         for (let y = 0; y < lines.length; y++) {
             const line = lines[y];
@@ -33,7 +33,6 @@
                 'WINDOWS', 'GUI', 'CTRL', 'CONTROL',
                 'ALT', 'SHIFT'
             ]
-
             const parts = line.split(' ')
             let out = '';
             for (let x = 0; x < parts.length; x++) {
@@ -48,7 +47,9 @@
                 }
                 let color = '#666'
                 let fontWeight = 500;
+                console.log(part)
                 if (MODIFIERS.indexOf(part) !== -1) {
+                    console.log(part)
                     color = '#62aed5'
                     fontWeight = 700
                 } else if (part.match(/^(REPEAT|DELAY|REPLAY|DEFAULTDELAY|DEFAULT_DELAY|LED)$/)) {

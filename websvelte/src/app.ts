@@ -1,6 +1,7 @@
 import { get, writable } from "svelte/store";
 import { browser } from "$app/env";
 import { toast } from "./toasts";
+
 export const showLoader = writable(true)
 
 const HOST: string = '192.168.4.1'
@@ -160,7 +161,9 @@ class Socket {
     }
 
     async status(): Promise<ChipStatus> {
-        return this.send('status')
+        const value = await this.send('status')
+        status.set(value)
+        return value
     }
 
     realName(name: string): string {

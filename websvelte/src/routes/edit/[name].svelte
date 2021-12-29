@@ -9,6 +9,7 @@
 
     import FileIcon from "../../assets/icons/file.svg"
     import Box from "../../components/Box.svelte";
+    import { toast } from "../../toasts";
 
     const name = get(page).params.id;
     const contents = writable('')
@@ -20,6 +21,7 @@
     export async function loadFile() {
         const response = await socket.streamFile(name)
         contents.set(response)
+        toast(`Loaded file "${name}"`)
     }
 
     if (browser) {
