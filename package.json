@@ -7,11 +7,12 @@
   "license": "MIT",
   "scripts": {
     "web:install": "cd websvelte && yarn install",
-    "web:build": "cd websvelte && yarn build",
-    "web:convert": "yarn web:build && node webcoverter.js",
     "dev": "cd websvelte && yarn dev",
-    "compile": "arduino-cli compile -b wifiduck:esp8266:malduinow esp_duck --build-path build",
-    "upload": "node upload.js",
-    "upload:compile": "yarn compile && yarn upload"
+    "upload": "yarn build && yarn upload",
+    "upload:no-build": "node upload.js",
+    "build:web": "cd websvelte && yarn build",
+    "build:web:convert": "yarn build:web && node webcoverter.js",
+    "build:esp": "arduino-cli compile -b wifiduck:esp8266:malduinow esp_duck --build-path build",
+    "build": "yarn build:web:convert && yarn build:esp"
   }
 }
