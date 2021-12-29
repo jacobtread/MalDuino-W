@@ -9,6 +9,9 @@
     "web:install": "cd websvelte && yarn install",
     "web:build": "cd websvelte && yarn build",
     "web:convert": "yarn web:build && node webcoverter.js",
-    "dev": "cd websvelte && yarn dev"
+    "dev": "cd websvelte && yarn dev",
+    "compile": "arduino-cli compile -b wifiduck:esp8266:malduinow esp_duck --build-path build",
+    "upload": "node upload.js",
+    "upload:compile": "yarn compile && yarn upload"
   }
 }
