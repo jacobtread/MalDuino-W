@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
+import svg from "@poppanator/sveltekit-svg";
 
 /** @type {{preprocess: AutoPreprocessGroup, kit: {adapter: Promise<void>}}} */
 const config = {
@@ -10,7 +11,10 @@ const config = {
 	kit: {
 		adapter: adapter({out: 'dist'}),
 		appDir: '.',
-		ssr: false
+		ssr: false,
+		vite: {
+			plugins: [svg({})]
+		}
 	},
 };
 
