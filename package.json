@@ -8,11 +8,14 @@
   "scripts": {
     "web:install": "cd websvelte && yarn install",
     "dev": "cd websvelte && yarn dev",
-    "upload": "yarn build && yarn upload",
+    "upload": "yarn build && node upload.js",
     "upload:no-build": "node upload.js",
     "build:web": "cd websvelte && yarn build",
-    "build:web:convert": "yarn build:web && node webcoverter.js",
+    "build:web:convert": "yarn build:web && node webconverter.js",
     "build:esp": "arduino-cli compile -b wifiduck:esp8266:malduinow esp_duck --build-path build",
     "build": "yarn build:web:convert && yarn build:esp"
+  },
+  "dependencies": {
+    "request": "^2.88.2"
   }
 }

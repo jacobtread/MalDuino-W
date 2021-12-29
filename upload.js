@@ -1,4 +1,3 @@
-const http = require('http')
 const fs = require('fs')
 const path = require('path')
 
@@ -9,26 +8,24 @@ if (!fs.existsSync(compiledFile)) {
     return
 }
 
-const request = http.request('http://192.168.4.1/update', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'multipart/form-data; boundary=WebAppBoundary'
-    },
-}, res => {
-    let data = ''
-    res.setEncoding('utf8')
-    res.on('data', chunk => data += chunk)
-    res.on('end', () => {
-        console.table({
-            status: res.statusCode,
-            response: data
-        })
-    })
-})
-request.on('error', console.error)
+console.log('Uploading new binary')
 
-request.write('--WebAppBoundary', 'utf8')
-const data = fs.readFileSync(compiledFile, 'binary')
-request.write(data, 'binary')
-request.write('--WebAppBoundary--', 'utf8')
-request.end()
+const request = require('request');
+const options = {
+    'method': 'POST',
+    'url': 'http://192.168.4.1/update',
+    'headers': {},
+    formData: {
+        'update': {
+            'value': fs.createReadStream(compiledFile),
+            'options': {
+                'filename': 'esp_duck.ino.bin',
+                'contentType': null
+            }
+        }
+    }
+};
+request(options, function (error, response) {
+    if (error) throw new Error(error);
+    console.log('Upload complete: ' + response.body);
+});

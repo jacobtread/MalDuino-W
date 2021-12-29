@@ -71,4 +71,5 @@ createCallbacks('websvelte/build').then(() => {
         output += hexDatum
     }
     return fs.writeFile(path.join('esp_duck', 'webfiles.h'), output, 'utf8')
-}).then().catch()
+}).then(() =>
+    console.log('Compiled new web files')).catch()
