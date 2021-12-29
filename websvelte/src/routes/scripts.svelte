@@ -52,9 +52,9 @@
                     <span class="file__name">{file.name}</span>
                     <span class="file__size">{file.size} bytes</span>
                     <div class="file__actions">
-                        <button class="button file__dit">
+                        <a class="button file__edit" href="/edit{file.name}">
                             <EditIcon/>
-                        </button>
+                        </a>
                         <button class="button file__run">
                             <PlayIcon/>
                         </button>

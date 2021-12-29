@@ -2,7 +2,7 @@
 
     import { writable } from "svelte/store";
 
-    const text = writable('')
+    export let text
     const highlighted = writable('')
 
     const highlightElm = writable()
@@ -56,7 +56,7 @@
                     fontWeight = 700
                 } else if (part.match(/^[a-zA-Z0-9]$/) || KEYS.indexOf(part) !== -1) {
                     color = '#8287e3'
-                }  else if (part.match(/^[1-9][0-9]*$/) || KEYS.indexOf(part) !== -1) {
+                } else if (part.match(/^[1-9][0-9]*$/) || KEYS.indexOf(part) !== -1) {
                     color = '#8287e3'
                 } else if (part.match(/^F[1-9][0-2]?$/)) {
                     color = '#8f26b8'
