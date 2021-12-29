@@ -1,6 +1,8 @@
 <script>
     import "../assets/global.scss"
     import Navigation from "../components/Navigation.svelte";
+    import Toaster from "../components/Toaster.svelte";
+    import Loader from "../components/Loader.svelte";
 </script>
 <div class="content">
     <Navigation/>
@@ -8,7 +10,8 @@
         <slot/>
     </main>
 </div>
-
+<Toaster/>
+<Loader/>
 <style lang="scss">
 
   .content {

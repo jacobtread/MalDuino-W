@@ -1,5 +1,7 @@
 import { get, writable } from "svelte/store";
 import { browser } from "$app/env";
+import { toast } from "./toasts";
+export const showLoader = writable(true)
 
 const HOST: string = '192.168.4.1'
 const WS_HOST = `ws://${ HOST }/ws`
@@ -7,7 +9,11 @@ const WS_HOST = `ws://${ HOST }/ws`
 const TMP_FILE_NAME = 'temporary_script'
 
 export const status = writable('Awaiting Connection')
-export const statusColor = writable('#1c1a2a')
+export const statusColor = writable('#433e61')
+
+status.subscribe(value => {
+    toast(value, 1000, get(statusColor))
+})
 
 export const currentStatus = writable('')
 
@@ -57,7 +63,7 @@ class Socket {
             status.set('Connected')
             statusColor.set('#71a078')
             if (ws.readyState != WebSocket.OPEN) return
-            status.set('Ready')
+            showLoader.set(false)
             this.queueOpen = true;
         }
         ws.onmessage = (event: MessageEvent) => {
