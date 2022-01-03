@@ -89,10 +89,6 @@
     color: #fff;
     border-radius: 8px;
 
-    &__icon {
-      color: gray;
-    }
-
     &__name {
       font-size: 1.25rem;
     }

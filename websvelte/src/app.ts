@@ -42,7 +42,7 @@ function ig(any: Promise<any>) {
     any.then().catch()
 }
 
-export class Socket {
+class Socket {
 
     ws: WebSocket
     queueOpen: boolean
@@ -244,4 +244,10 @@ export let socket: Socket
 
 if (browser) {
     socket = new Socket()
+}
+
+export function reconnect() {
+    if(browser) {
+        socket = new Socket()
+    }
 }

@@ -1,9 +1,10 @@
 <script>
-    import { Socket, socket, status, statusColor } from "../app.ts";
+    import { socket, status, statusColor, reconnect } from "../app.ts";
     import Memory from "../components/Memory.svelte";
     import ConfirmDialog from "../components/ConfirmDialog.svelte";
     import { writable } from "svelte/store";
     import { toast } from "../toasts.ts";
+    import { browser } from "$app/env";
 
     const confirmFormat = writable(false)
 
@@ -13,9 +14,9 @@
         await socket.formatDrive()
     }
 
-    async function reconnect() {
+    async function r() {
         toast('Reconnecting')
-        socket = new Socket()
+        reconnect()
     }
 
 </script>
