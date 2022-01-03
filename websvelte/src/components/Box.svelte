@@ -15,7 +15,7 @@
     position: relative;
     padding: 1rem;
     border-radius: 0.25rem;
-    box-shadow: 0 0 5px rgba(0,0,0, 0.5);
+    border: 4px solid lighten($background, 3);
 
     :global(.box__icon) {
       background: $background;
@@ -25,7 +25,8 @@
       transform: translateY(-50%);
       padding: 0 0.5rem;
       width: 50px;
-      height: 32px
+      height: 32px;
+      color: lighten($background, 15);
     }
   }
 </style>

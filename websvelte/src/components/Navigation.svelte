@@ -42,7 +42,7 @@
     align-items: center;
     justify-content: center;
 
-    background: adjust-color($background, $red: 5%, $green: 5%, $blue: 10%);
+    background: darken($background, 3);
 
     &__state {
       width: 2rem;
@@ -63,7 +63,6 @@
 
       &__item {
         color: white;
-        background: adjust-color($background, $red: -5%, $green: -5%, $blue: -5%);
         padding: 1rem;
       }
 

@@ -13,10 +13,11 @@
   .toaster {
     position: fixed;
     right: 1rem;
-    bottom: 1rem;
+    top: 1rem;
     display: flex;
-    flex-flow: column-reverse;
+    flex-flow: column;
     gap: 1rem;
+    z-index: 99;
   }
 
   .toast {

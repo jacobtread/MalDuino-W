@@ -17,7 +17,7 @@
   .content {
     display: flex;
     flex-flow: row;
-    height: 100%;
+    height: 100vh;
     width: 100%;
   }
 

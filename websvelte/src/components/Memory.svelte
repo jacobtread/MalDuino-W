@@ -34,12 +34,12 @@
 
 <div class="memory">
     <Box icon={MemoryIcon}>
-        <slot name="content" >
+        <slot name="content">
             <h2>Storage</h2>
-            <div class="memory__bar"><span class="memory__bar__progress"
-                                           style="width: {($usedBytes / $totalBytes) * 100}%"></span></div>
+            <div class="memory__bar">
+                <span class="memory__bar__progress" style="width: {($usedBytes / $totalBytes) * 100}%"></span>
+            </div>
             <p class="memory__text">{formatMemory($usedBytes)} used of {formatMemory($totalBytes)}</p>
-            <button class="button action-bar__button button--red memory__format">Format Storage</button>
         </slot>
     </Box>
 </div>

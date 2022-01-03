@@ -7,9 +7,13 @@
     import { page } from '$app/stores';
 
     import FileIcon from "../../assets/icons/file.svg"
+    import SaveIcon from "../../assets/icons/save.svg"
+
     import Box from "../../components/Box.svelte";
     import { toast } from "../../toasts";
     import { onMount } from "svelte";
+    import Dialog from "../../components/Dialog.svelte";
+
 
     const name = get(page).params.name;
     const text = writable('')
@@ -118,25 +122,69 @@
         }
     }
 
+    const saveDialog = writable(false)
+
     async function saveFile() {
+        saveDialog.set(false)
         await socket.writeFile(name, get(text))
     }
-
 </script>
 
 <Box icon={FileIcon}>
-    <h1 class="name">Editing {name}</h1>
+    <div class="header">
+        <h1 class="name">Editing {name}</h1>
+        <div class="header__buttons">
+            <button class="header__buttons__item" on:click={() => saveDialog.set(true)}>
+                <SaveIcon/>
+            </button>
+        </div>
+    </div>
     <div class="wrapper">
         <textarea class="area" bind:value={$text} on:scroll={onScroll} wrap="off" on:keydown={onKeyPress}></textarea>
         <pre class="viewer" bind:this={$highlightElm}>{@html $highlighted}</pre>
     </div>
 </Box>
 
+<Dialog open={saveDialog}>
+    <h1 class="dialog__title">Confirm save</h1>
+    <p class="dialog__text">Are you sure you want to save this file?</p>
+    <div class="button-group">
+        <button class="button" on:click={saveFile}>Save</button>
+        <button class="button" on:click={() => saveDialog.set(false)}>Cancel</button>
+    </div>
+</Dialog>
 
 <style lang="scss">
+  @import "../../assets/variables";
+
   .name {
     color: #ECECEC;
-    margin: 1rem;
+    margin: 1rem 0;
+    font-size: 1.5rem;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+
+    &__buttons {
+      flex: auto;
+      justify-content: flex-end;
+      display: flex;
+
+      &__item {
+        color: #777;
+        background: transparent;
+        border: transparent;
+        transition: 0.2s ease;
+        cursor: pointer;
+
+        &:hover {
+          color: white;
+        }
+      }
+
+    }
   }
 
   .wrapper {
@@ -145,9 +193,11 @@
     height: 500px;
     width: 100%;
     margin: 0 auto;
-    background: #161421;
+    background: darken($background, 5);
+
 
     .area, .viewer {
+      border: none;
       position: absolute;
       left: 0;
       top: 0;
@@ -162,6 +212,12 @@
       box-sizing: border-box;
       overflow: hidden;
       resize: none;
+
+      outline: darken($background, 3) dashed;
+
+      &:focus-within {
+        outline: lighten($background, 10) dashed;
+      }
     }
 
     .area {

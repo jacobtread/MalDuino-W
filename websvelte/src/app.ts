@@ -42,7 +42,7 @@ function ig(any: Promise<any>) {
     any.then().catch()
 }
 
-class Socket {
+export class Socket {
 
     ws: WebSocket
     queueOpen: boolean

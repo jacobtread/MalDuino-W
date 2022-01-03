@@ -10,6 +10,7 @@
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
+    "@fontsource/roboto": "^4.5.1",
     "@poppanator/sveltekit-svg": "^0.2.2",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
