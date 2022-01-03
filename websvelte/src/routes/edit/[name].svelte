@@ -8,17 +8,19 @@
 
     import FileIcon from "../../assets/icons/file.svg"
     import SaveIcon from "../../assets/icons/save.svg"
+    import RunIcon from "../../assets/icons/play.svg"
 
     import Box from "../../components/Box.svelte";
     import { toast } from "../../toasts";
     import { onMount } from "svelte";
-    import Dialog from "../../components/Dialog.svelte";
+    import ConfirmDialog from "../../components/ConfirmDialog.svelte";
 
 
     const name = get(page).params.name;
     const text = writable('')
     const isChanged = writable(false)
     let originalText = '';
+    const saveDialog = writable(false)
 
     $: {
         console.log(get(text))
@@ -29,6 +31,15 @@
         originalText = response
         text.set(response)
         toast(`Loaded file "${ name }"`)
+    }
+
+    async function runFile() {
+        if (get(isChanged)) {
+            saveDialog.set(true)
+            return
+        }
+        toast('Running script')
+        await socket.runScript(name)
     }
 
 
@@ -67,37 +78,54 @@
                 'WINDOWS', 'GUI', 'CTRL', 'CONTROL',
                 'ALT', 'SHIFT'
             ]
+
             const parts = line.split(' ')
             let out = '';
-            for (let x = 0; x < parts.length; x++) {
-                const part = parts[x];
-                if (part.endsWith('\n')) {
-                    $highlightElm.scrollLeft = 0
+            if (parts[0] == 'LED') {
+                const parts = line.split(' ');
 
+                out += '<span style="color:#8287e3; font-weight:700;">LED</span>'
+                if (parts.length >= 2) {
+                    out += ` <span style="color:#d77e7e;">${ parts[1] }</span>`
                 }
-                if (part.length === 0) {
-                    out += ' '
-                    continue
+                if (parts.length >= 3) {
+                    out += ` <span style="color:#63d455;">${ parts[2] }</span>`
                 }
-                let color = '#666'
-                let fontWeight = 500;
-                if (MODIFIERS.indexOf(part) !== -1) {
-                    console.log(part)
-                    color = '#62aed5'
-                    fontWeight = 700
-                } else if (part.match(/^(REPEAT|DELAY|REPLAY|DEFAULTDELAY|DEFAULT_DELAY|LED)$/)) {
-                    color = '#96d77e'
-                    fontWeight = 700
-                } else if (part.match(/^[a-zA-Z0-9]$/) || KEYS.indexOf(part) !== -1) {
-                    color = '#8287e3'
-                } else if (part.match(/^[1-9][0-9]*$/) || KEYS.indexOf(part) !== -1) {
-                    color = '#8287e3'
-                } else if (part.match(/^F[1-9][0-2]?$/)) {
-                    color = '#8f26b8'
-                } else if (part.match(/^[0-9]*x[0-9]*$/)) {
-                    color = '#ffe169'
+                if (parts.length >= 4) {
+                    out += ` <span style="color:#2ab5e8;">${ parts[3] }</span>`
                 }
-                out += `<span style="color:${ color }; font-weight: ${ fontWeight };">${ part }</span> `
+            } else {
+
+                for (let x = 0; x < parts.length; x++) {
+                    const part = parts[x];
+                    if (part.endsWith('\n')) {
+                        $highlightElm.scrollLeft = 0
+
+                    }
+                    if (part.length === 0) {
+                        out += ' '
+                        continue
+                    }
+                    let color = '#666'
+                    let fontWeight = 500;
+                    if (MODIFIERS.indexOf(part) !== -1) {
+                        console.log(part)
+                        color = '#62aed5'
+                        fontWeight = 700
+                    } else if (part.match(/^(REPEAT|DELAY|REPLAY|DEFAULTDELAY|DEFAULT_DELAY|LED)$/)) {
+                        color = '#96d77e'
+                        fontWeight = 700
+                    } else if (part.match(/^[a-zA-Z0-9]$/) || KEYS.indexOf(part) !== -1) {
+                        color = '#8287e3'
+                    } else if (part.match(/^[1-9][0-9]*$/) || KEYS.indexOf(part) !== -1) {
+                        color = '#8287e3'
+                    } else if (part.match(/^F[1-9][0-2]?$/)) {
+                        color = '#8f26b8'
+                    } else if (part.match(/^[0-9]*x[0-9]*$/)) {
+                        color = '#ffe169'
+                    }
+                    out += `<span style="color:${ color }; font-weight: ${ fontWeight };">${ part }</span> `
+                }
             }
             output += out + '<br>'
         }
@@ -122,11 +150,16 @@
         }
     }
 
-    const saveDialog = writable(false)
 
     async function saveFile() {
         saveDialog.set(false)
         await socket.writeFile(name, get(text))
+        isChanged.set(false)
+    }
+
+    async function saveAnRun() {
+        await saveFile()
+        await runFile()
     }
 </script>
 
@@ -134,7 +167,10 @@
     <div class="header">
         <h1 class="name">Editing {name}</h1>
         <div class="header__buttons">
-            <button class="header__buttons__item" on:click={() => saveDialog.set(true)}>
+            <button class="header__buttons__item" on:click={runFile}>
+                <RunIcon/>
+            </button>
+            <button class="header__buttons__item" on:click={saveFile}>
                 <SaveIcon/>
             </button>
         </div>
@@ -145,14 +181,15 @@
     </div>
 </Box>
 
-<Dialog open={saveDialog}>
-    <h1 class="dialog__title">Confirm save</h1>
-    <p class="dialog__text">Are you sure you want to save this file?</p>
-    <div class="button-group">
-        <button class="button" on:click={saveFile}>Save</button>
-        <button class="button" on:click={() => saveDialog.set(false)}>Cancel</button>
-    </div>
-</Dialog>
+<ConfirmDialog
+        open={saveDialog}
+        title="Confirm save"
+        message="This file has unsaved changes that must be saved before running would you like to save them?"
+        confirmText="Save"
+        denyText="Cancel"
+        confirmAction={saveAnRun}
+        denyAction={() => saveDialog.set(false)}
+/>
 
 <style lang="scss">
   @import "../../assets/variables";
