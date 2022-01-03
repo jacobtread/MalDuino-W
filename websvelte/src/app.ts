@@ -235,7 +235,7 @@ class Socket {
         }
         await this.send('close')
         await this.send(`remove "${ file }"`)
-        await this.send(`rename "${ TMP_FILE_NAME }" ${ file }"`)
+        await this.send(`rename "${ TMP_FILE_NAME }" "${ file }"`)
         await this.status()
     }
 }
