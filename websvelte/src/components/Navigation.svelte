@@ -1,7 +1,6 @@
 <script>
     import { status, statusColor } from "../app.ts";
     import HomeIcon from "../assets/icons/home.svg"
-    import UpdateIcon from "../assets/icons/update.svg"
     import TerminalIcon from "../assets/icons/terminal.svg"
     import SettingsIcon from "../assets/icons/settings.svg"
     import StorageIcon from "../assets/icons/storage.svg"
@@ -15,9 +14,6 @@
         </a>
         <a href="/scripts" class="nav__buttons__item">
             <StorageIcon fill="currentColor"/>
-        </a>
-        <a href="/update" class="nav__buttons__item">
-            <UpdateIcon fill="currentColor"/>
         </a>
         <a href="/terminal" class="nav__buttons__item">
             <TerminalIcon fill="currentColor"/>
@@ -35,6 +31,7 @@
   .nav {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
+    width: 64px;
     height: 100%;
     display: flex;
     flex-flow: column;

@@ -1,10 +1,9 @@
 <script>
-    import { socket, status, statusColor, reconnect } from "../app.ts";
+    import { reconnect, socket, status, statusColor } from "../app.ts";
     import Memory from "../components/Memory.svelte";
     import ConfirmDialog from "../components/ConfirmDialog.svelte";
     import { writable } from "svelte/store";
     import { toast } from "../toasts.ts";
-    import { browser } from "$app/env";
 
     const confirmFormat = writable(false)
 

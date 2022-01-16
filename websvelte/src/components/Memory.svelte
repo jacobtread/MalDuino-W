@@ -12,9 +12,9 @@
 
     export async function updateMemory() {
         const resp = await socket.getMemoryUsage()
-        $totalBytes = resp.totalBytes
-        $usedBytes = resp.usedBytes
-        $freeBytes = resp.freeBytes
+        $totalBytes = resp.total
+        $usedBytes = resp.used
+        $freeBytes = resp.free
     }
 
     function formatMemory(value: number): string {

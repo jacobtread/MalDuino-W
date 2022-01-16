@@ -1,14 +1,11 @@
 import { get, writable } from "svelte/store";
 import { browser } from "$app/env";
 import { toast } from "./toasts";
+import { OutboundQueue } from "./app/queue";
+import type { File, MemoryUsage, Settings } from "./app/types";
+import { TMP_FILE_NAME, WS_HOST, WS_URL } from "./app/constants";
 
 export const showLoader = writable(true)
-
-const HOST: string = '192.168.4.1'
-const WS_HOST = `ws://${ HOST }/ws`
-
-const TMP_FILE_NAME = 'temporary_script'
-
 export const status = writable('Awaiting Connection')
 export const statusColor = writable('#433e61')
 
@@ -20,44 +17,23 @@ export const currentStatus = writable('')
 
 type SocketCallback = (msg: string) => void
 
-interface QueueItem {
-    message: string;
-    callback: SocketCallback;
-}
-
-interface File {
-    name: string;
-    size: string;
-}
-
-interface MemoryUsage {
-    totalBytes: number;
-    usedBytes: number;
-    freeBytes: number;
-}
-
-type ChipStatus = 'connected' | 'disconnected' | string
-
-function ig(any: Promise<any>) {
-    any.then().catch()
-}
-
 class Socket {
 
-    ws: WebSocket
-    queueOpen: boolean
+    ws: WebSocket;
+    queueOpen: boolean;
 
-    updateInterval: NodeJS.Timer
-    statusInterval: NodeJS.Timer
+    updateInterval: NodeJS.Timer;
+    statusInterval: NodeJS.Timer;
 
-    outboundQueue: QueueItem[]
-    callback: SocketCallback
+    queue: OutboundQueue;
+
+    callback: SocketCallback;
 
     constructor() {
-        this.outboundQueue = []
+        this.queue = new OutboundQueue();
         this.queueOpen = false
 
-        const ws = new WebSocket(WS_HOST)
+        const ws = new WebSocket(WS_URL)
         status.set('Connecting')
         statusColor.set('#80c2e8')
         ws.onopen = () => {
@@ -89,29 +65,26 @@ class Socket {
     }
 
     update() {
-        if (this.queueOpen && this.outboundQueue.length > 0) {
-            const { message, callback } = this.outboundQueue.shift()
-            this.ws.send(message)
+        if (this.queueOpen && this.queue.hasNext()) {
+            const { msg, callback } = this.queue.pop()
+            this.ws.send(msg)
             this.callback = callback
-            console.debug('[WS] [OUT] ' + message)
+            console.debug('[WS] [OUT] ' + msg)
             this.queueOpen = false
         }
     }
 
-    async sendRaw(message: string, skipQueue: boolean = false): Promise<string> {
-        return new Promise((resolve: SocketCallback) => {
-            const queueItem = { message, callback: resolve }
-            if (skipQueue) {
-                this.outboundQueue.unshift(queueItem)
-            } else {
-                this.outboundQueue.push(queueItem)
-            }
-        })
-    }
-
     async send(message: string, skipQueue: boolean = false): Promise<string> {
         if (!message.endsWith('\n')) message += '\n'
-        return this.sendRaw(message, skipQueue)
+        return this.queue.push(message, skipQueue)
+    }
+
+    async sendAll(messages: string[]): Promise<string[]> {
+        const output = [];
+        for (let message of messages) {
+            output.push(await this.send(message));
+        }
+        return output
     }
 
     async getFiles(): Promise<File[]> {
@@ -132,9 +105,9 @@ class Socket {
         const [ totalBytes, usedBytes, freeBytes ] = response.split('\n', 3);
 
         return {
-            totalBytes: parse(totalBytes),
-            usedBytes: parse(usedBytes),
-            freeBytes: parse(freeBytes)
+            total: parse(totalBytes),
+            used: parse(usedBytes),
+            free: parse(freeBytes)
         }
     }
 
@@ -160,7 +133,7 @@ class Socket {
         }, 500)
     }
 
-    async status(): Promise<ChipStatus> {
+    async status(): Promise<string> {
         const value = await this.send('status')
         status.set(value)
         return value
@@ -221,22 +194,38 @@ class Socket {
         return this.send(`set autorun "${ this.realName(file) }"`)
     }
 
+    async getSettings(): Promise<Settings> {
+        const rawSettings: string = await this.send('settings');
+        const lines: string[] = rawSettings.split(/\n/)
+        const val = (value: string): string => value.split('=')[1]
+        return {
+            ssid: val(lines[0]),
+            password: val(lines[1]),
+            channel: val(lines[2]),
+            autorun: val(lines[3]),
+        }
+    }
+
     async writeFile(file: string, content: string): Promise<void> {
         await this.stopScript(file)
         file = this.realName(file)
-        await this.send(`remove "${ TMP_FILE_NAME }"`)
-        await this.send(`create "${ TMP_FILE_NAME }"`)
-        await this.send(`stream "${ TMP_FILE_NAME }"`)
+        await this.sendAll([
+            `remove "${ TMP_FILE_NAME }"`,
+            `create "${ TMP_FILE_NAME }"`,
+            `stream "${ TMP_FILE_NAME }"`
+        ])
         const chunkSize = 1024
         for (let i = 0; i < Math.ceil(content.length / chunkSize); i++) {
             const begin: number = i * chunkSize
             const end: number = Math.min(begin + chunkSize, content.length)
-            await this.sendRaw(content.substring(begin, end))
+            await this.queue.push(content.substring(begin, end))
         }
-        await this.send('close')
-        await this.send(`remove "${ file }"`)
-        await this.send(`rename "${ TMP_FILE_NAME }" "${ file }"`)
-        await this.status()
+        await this.sendAll([
+            'close',
+            `remove "${ file }"`,
+            `rename "${ TMP_FILE_NAME }" "${ file }"`
+        ])
+        await this.status();
     }
 }
 
@@ -247,7 +236,7 @@ if (browser) {
 }
 
 export function reconnect() {
-    if(browser) {
+    if (browser) {
         socket = new Socket()
     }
 }

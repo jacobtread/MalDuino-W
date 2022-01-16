@@ -22,10 +22,14 @@
   }
 
   .main {
+    position: absolute;
+    left: 64px;
+    width: calc(100% - 64px);
+    height: 100%;
+    overflow-y: auto;
     padding: 2.5rem;
-
     color: gray;
-    flex: auto;
   }
+
 </style>
 

@@ -8,7 +8,7 @@ interface ToastData {
     color: string;
 }
 
-enum ToastType {
+export enum ToastType {
     NORMAL = '#433e61',
     ERROR = '#db7777',
     GOOD = '#68ac82'

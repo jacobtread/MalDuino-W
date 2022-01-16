@@ -1,9 +1,11 @@
 <script>
-    export let icon
+    export let icon = undefined
 </script>
 
 <div class="box">
-    <svelte:component this={icon} class="box__icon"/>
+    {#if icon}
+        <svelte:component this={icon} class="box__icon"/>
+    {/if}
     <slot class="box__content"/>
 </div>
 
@@ -27,6 +29,9 @@
       width: 50px;
       height: 32px;
       color: lighten($background, 15);
+    }
+    .box__content {
+      position: relative;
     }
   }
 </style>
