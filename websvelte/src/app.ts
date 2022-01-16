@@ -3,8 +3,9 @@ import { browser } from "$app/env";
 import { toast } from "./toasts";
 import { OutboundQueue } from "./app/queue";
 import type { File, MemoryUsage, Settings } from "./app/types";
-import { TMP_FILE_NAME, WS_HOST, WS_URL } from "./app/constants";
+import { TMP_FILE_NAME, WS_URL } from "./app/constants";
 
+export const terminalLines = writable<string[]>([])
 export const showLoader = writable(true)
 export const status = writable('Awaiting Connection')
 export const statusColor = writable('#433e61')
@@ -16,6 +17,16 @@ status.subscribe(value => {
 export const currentStatus = writable('')
 
 type SocketCallback = (msg: string) => void
+
+function debugLog(value: string) {
+    const lines = value.split(/\n/)
+    const output: string[] = get(terminalLines)
+    for (let line of lines) {
+        if (line.length == 0 || line == '\n') continue
+        output.push(line)
+    }
+    terminalLines.set(output)
+}
 
 class Socket {
 
@@ -48,6 +59,7 @@ class Socket {
             console.debug('[WS] [IN] ' + data)
             if (this.callback) this.callback(data)
             this.queueOpen = true
+            debugLog(data)
         }
         ws.onclose = () => {
             status.set('Disconnected')
@@ -69,8 +81,9 @@ class Socket {
             const { msg, callback } = this.queue.pop()
             this.ws.send(msg)
             this.callback = callback
-            console.debug('[WS] [OUT] ' + msg)
             this.queueOpen = false
+            console.debug('[WS] [OUT] ' + msg)
+            debugLog('> ' + msg);
         }
     }
 
