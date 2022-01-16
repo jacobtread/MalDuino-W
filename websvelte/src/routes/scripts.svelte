@@ -8,6 +8,7 @@
     import EditIcon from "../assets/icons/edit.svg"
     import DeleteIcon from "../assets/icons/delete.svg"
     import Box from "../components/Box.svelte";
+    import { toast } from "../toasts";
 
     interface File {
         name: string;
@@ -33,9 +34,17 @@
     }
 
     async function deleteFile(file: File) {
-        await socket.deleteFile(file.name)
-        await loadFiles()
+        if (confirm('Are you sure you want to delete this file?')) {
+            await socket.deleteFile(file.name)
+            await loadFiles()
+        }
     }
+
+    async function runFile(file: File) {
+        toast('Running script ' + file.name)
+        await socket.runScript(file.name)
+    }
+
 
 </script>
 
@@ -55,7 +64,7 @@
                         <a class="button file__edit" href="/edit{file.name}">
                             <EditIcon/>
                         </a>
-                        <button class="button file__run">
+                        <button class="button file__run" on:click={runFile(file)}>
                             <PlayIcon/>
                         </button>
                         <button class="button file__delete" on:click={deleteFile(file)}>

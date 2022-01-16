@@ -6,6 +6,7 @@
 
     import { page } from '$app/stores';
 
+    import BackIcon from "../../assets/icons/back.svg"
     import FileIcon from "../../assets/icons/file.svg"
     import SaveIcon from "../../assets/icons/save.svg"
     import RunIcon from "../../assets/icons/play.svg"
@@ -165,12 +166,15 @@
 
 <Box icon={FileIcon}>
     <div class="header">
+        <a class="button back-button" href="/scripts">
+            <BackIcon/>
+        </a>
         <h1 class="name">Editing {name}</h1>
         <div class="header__buttons">
-            <button class="header__buttons__item" on:click={runFile}>
+            <button class="header__buttons__item button" on:click={runFile}>
                 <RunIcon/>
             </button>
-            <button class="header__buttons__item" on:click={saveFile}>
+            <button class="header__buttons__item button" on:click={saveFile}>
                 <SaveIcon/>
             </button>
         </div>
@@ -194,6 +198,10 @@
 <style lang="scss">
   @import "../../assets/variables";
 
+  .back-button {
+    margin-right: 1rem;
+  }
+
   .name {
     color: #ECECEC;
     margin: 1rem 0;
@@ -203,16 +211,18 @@
   .header {
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 
     &__buttons {
       flex: auto;
       justify-content: flex-end;
       display: flex;
+      gap: 1rem;
 
       &__item {
         color: #777;
         background: transparent;
-        border: transparent;
         transition: 0.2s ease;
         cursor: pointer;
 
