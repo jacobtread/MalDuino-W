@@ -5,7 +5,14 @@ This is a fork of the original Malduino W code which is a fork of the wifi bad u
 
 ## ⌚️ Current State
 
-Currently this  is incomplete and not ready for proper use however much of the underlying web code is already implemented
+There is now a working release available in the releases tab
+
+## Preview
+
+![img.png](preview/img.png)
+![img_1.png](preview/img_1.png)
+![img_2.png](preview/img_2.png)
+![img_3.png](preview/img_3.png)
 
 ## 🧳 Changes
 
